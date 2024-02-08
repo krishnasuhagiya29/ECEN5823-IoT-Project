@@ -15,7 +15,7 @@ See [Mastering Markdown](https://guides.github.com/features/mastering-markdown/)
    <br>Screenshot:  
    ![Avg_current_lpmOFF](link-to-screenshot-image)
    
-3. What is the ave current from the time we power-on the 7021 until we get the COMP1 IRQ indicating that the 7021's maximum time for conversion (measurement) has expired.
+3. What is the ave current from the time we power-on the 7021 until the polled implementation of timerWaitUs() returns, indicating that the 7021's maximum time for conversion (measurement) has expired.
    Answer:
    <br>Screenshot:  
    ![Avg_current_lpmON](link-to-screenshot-image)
