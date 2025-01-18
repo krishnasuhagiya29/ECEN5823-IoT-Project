@@ -29,24 +29,29 @@
 // <h> SL_STATUS string components Configuration
 
 /********************************************************************************************************
- ********************************************************************************************************
- *                                             STRING COMPONENTS
- *********************************************************************************************************
- ********************************************************************************************************/
-// <q STATUS_STRING_ENABLE_GENERIC> Enable generic string
+********************************************************************************************************
+*                                             STRING COMPONENTS
+*********************************************************************************************************
+********************************************************************************************************/
+// <q SL_STATUS_STRING_ENABLE_GENERIC> Enable generic string
 // <i> Enable (1) or disable (0) generic string components.
 // <i> Default: 1
 #define  SL_STATUS_STRING_ENABLE_GENERIC                             1
 
-// <q STATUS_STRING_ENABLE_BLUETOOTH> Enable Bluetooth string components
+// <q SL_STATUS_STRING_ENABLE_BLUETOOTH> Enable Bluetooth string components
 // <i> Enable (1) or disable (0) Bluetooth string components.
 // <i> Default: 1
 #define  SL_STATUS_STRING_ENABLE_BLUETOOTH                           1
 
-// <q STATUS_STRING_ENABLE_WIFI> Enable WiFi string components
+// <q SL_STATUS_STRING_ENABLE_WIFI> Enable WiFi string components
 // <i> Enable (1) or disable (0) Wifi string components.
 // <i> Default: 1
 #define  SL_STATUS_STRING_ENABLE_WIFI                                1
+
+// <q SL_STATUS_STRING_ENABLE_COMPUTE> Enable Compute (MVP Driver & MVP Math) string components
+// <i> Enable (1) or disable (0) MVP Driver/MVP Math string components.
+// <i> Default: 0
+#define  SL_STATUS_STRING_ENABLE_COMPUTE                             1
 
 // </h>
 
