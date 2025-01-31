@@ -35,7 +35,7 @@
  *
  *
  *
- * @student    Krishna Suhagiya, krishna.suhagiya@Colorado.edu
+ * @student    Krishna Suhagiya, krishna.suhagiya@colorado.edu
  *
  *
  *
@@ -187,7 +187,9 @@ SL_WEAK void app_init(void)
  * comment out this function. Wait loops are a bad idea in general.
  * We'll discuss how to do this a better way in the next assignment.
  *****************************************************************************/
-static void delayApprox(int delay)
+/*
+ // Not removing as it is going to be implemented going further.
+ static void delayApprox(int delay)
 {
   volatile int i;
 
@@ -195,7 +197,7 @@ static void delayApprox(int delay)
       i=i+1;
   }
 
-} // delayApprox()
+} // delayApprox()*/
 
 
 
