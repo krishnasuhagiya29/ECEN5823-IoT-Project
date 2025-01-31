@@ -33,7 +33,7 @@
  *
  *
  * Student edit: Add your name and email address here:
- * @student    Awesome Student, Awesome.Student@Colorado.edu
+ * @student    Krishna Suhagiya, krishna.suhagiya@colorado.edu
  *
  *
  ******************************************************************************/
@@ -47,6 +47,26 @@
 
 #ifndef APP_H
 #define APP_H
+
+#define EM0 0
+#define EM1 1
+#define EM2 2
+#define EM3 3
+
+// Only define 1 of these to define the lowest energy mode
+// EM0 = highest energy mode, EM3 = lowest energy mode
+#define LOWEST_ENERGY_MODE EM0
+//#define LOWEST_ENERGY_MODE EM1
+//#define LOWEST_ENERGY_MODE EM2
+//#define LOWEST_ENERGY_MODE EM3
+
+#if (LOWEST_ENERGY_MODE==EM3)
+#define CLOCK_FREQ  1000
+#define PRESCALER_VALUE 1
+#else
+#define CLOCK_FREQ  32768
+#define PRESCALER_VALUE 4
+#endif
 
 /**************************************************************************//**
  * Application Init.

@@ -7,10 +7,10 @@ See [Mastering Markdown](https://guides.github.com/features/mastering-markdown/)
 
 Energy Mode | Period (ms) | LED On Time (ms) |Period average current (uA) | Average Current with LED off (uA) | Average Current with LED On (uA)
 ------------| ------------|------------------|----------------------------|-----------------------------------|---------------------------------
-EM0         |    TBD      |       TBD        |          TBD               |           TBD                     |         TBD
-EM1         |    TBD      |       TBD        |          TBD               |           TBD                     |         TBD
-EM2         |    TBD      |       TBD        |          TBD               |           TBD                     |         TBD
-EM3         |    TBD      |       TBD        |          TBD               |           TBD                     |         TBD
+EM0         |    2250     |       176        |          5320.00           |           5290.00                 |         5770.00
+EM1         |    2250     |       176        |          3780.00           |           3740.00                 |         4230.00
+EM2         |    2250     |       176        |          43.09             |           1.08                    |         498.51
+EM3         |    2210     |       176        |          44.18             |           5.29                    |         494.00
 
 
 
@@ -56,22 +56,22 @@ LED measurement - Period
 LED measurement - LED on time   
 ![em3_led_ledOnTime][em3_led_ledOnTime]  
 
-[em0_avg_current_period]: screenshots/em0_avg_current_period.jpg "em0_avg_current_period"
-[em0_avg_current_ledoff]: screenshots/em0_avg_current_ledoff.jpg "em0_avg_current_ledoff"
-[em0_avg_current_ledon]: put-your-link-to-screenshot-image-here "em0_avg_current_ledon"
+[em0_avg_current_period]: Images/assignment2_EM0_LEDperiod.jpg "em0_avg_current_period"
+[em0_avg_current_ledoff]: Images/assignment2_EM0_LEDoff.jpg "em0_avg_current_ledoff"
+[em0_avg_current_ledon]: Images/assignment2_EM0_LEDon.jpg "em0_avg_current_ledon"
 
-[em1_avg_current_period]: put-your-link-to-screenshot-image-here "em1_avg_current_period"
-[em1_avg_current_ledoff]: put-your-link-to-screenshot-image-here "em1_avg_current_ledoff"
-[em1_avg_current_ledon]: put-your-link-to-screenshot-image-here "em1_avg_current_ledon"
+[em1_avg_current_period]: Images/assignment2_EM1_LEDperiod.jpg "em1_avg_current_period"
+[em1_avg_current_ledoff]: Images/assignment2_EM1_LEDoff.jpg "em1_avg_current_ledoff"
+[em1_avg_current_ledon]: Images/assignment2_EM1_LEDon.jpg "em1_avg_current_ledon"
 
-[em2_avg_current_period]: put-your-link-to-screenshot-image-here "em2_avg_current_period"
-[em2_avg_current_ledoff]: put-your-link-to-screenshot-image-here "em2_avg_current_ledoff"
-[em2_avg_current_ledon]: put-your-link-to-screenshot-image-here "em2_avg_current_ledon"
-[em2_led_period]: put-your-link-to-screenshot-image-here "em2_led_period"
-[em2_led_ledOnTime]: put-your-link-to-screenshot-image-here "em2_led_ledOnTime"
+[em2_avg_current_period]: Images/assignment2_EM2_LEDperiod.jpg "em2_avg_current_period"
+[em2_avg_current_ledoff]: Images/assignment2_EM2_LEDoff.jpg "em2_avg_current_ledoff"
+[em2_avg_current_ledon]: Images/assignment2_EM2_LEDon.jpg "em2_avg_current_ledon"
+[em2_led_period]: Images/assignment2_EM2_LEDperiod.jpg "em2_led_period"
+[em2_led_ledOnTime]: Images/assignment2_EM2_LEDon.jpg "em2_led_ledOnTime"
 
-[em3_avg_current_period]: put-your-link-to-screenshot-image-here "em3_avg_current_period"
-[em3_avg_current_ledoff]: put-your-link-to-screenshot-image-here "em3_avg_current_ledoff"
-[em3_avg_current_ledon]: put-your-link-to-screenshot-image-here "em3_avg_current_ledon"
-[em3_led_period]: put-your-link-to-screenshot-image-here "em3_led_period"
-[em3_led_ledOnTime]: put-your-link-to-screenshot-image-here "em3_led_ledOnTime"
+[em3_avg_current_period]: Images/assignment2_EM3_LEDperiod.jpg "em3_avg_current_period"
+[em3_avg_current_ledoff]: Images/assignment2_EM3_LEDoff.jpg "em3_avg_current_ledoff"
+[em3_avg_current_ledon]: Images/assignment2_EM3_LEDon.jpg "em3_avg_current_ledon"
+[em3_led_period]: Images/assignment2_EM3_LEDperiod.jpg "em3_led_period"
+[em3_led_ledOnTime]: Images/assignment2_EM3_LEDon.jpg "em3_led_ledOnTime"
