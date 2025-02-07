@@ -25,6 +25,7 @@ void initOscillator() {
   CMU_ClockDivSet(cmuClock_LETIMER0, PRESCALER_VALUE);  // Set the clock divider
   CMU_ClockEnable(cmuClock_LETIMER0, true); // Enable the LETIMER0 clock
 
+  /*// Enable this code for debugging
   CMU_Select_TypeDef freq_index = CMU_ClockSelectGet(cmuClock_LFA);
   printf("LFA clock selection: %u\r\n", freq_index);
   CMU_ClkDiv_TypeDef div = CMU_ClockDivGet(cmuClock_LETIMER0);
@@ -33,5 +34,5 @@ void initOscillator() {
   printf("LFA clock frequency: %lu\r\n", lfa_freq);
   uint32_t letimer0_freq = CMU_ClockFreqGet(cmuClock_LETIMER0);
   printf("LETIMER0 clock frequency: %lu\r\n", letimer0_freq);
-
+  */
 }

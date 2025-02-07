@@ -12,6 +12,9 @@
 #include "em_letimer.h"
 #include "timers.h"
 
+#define INCLUDE_LOG_DEBUG 1
+#include "src/log.h"
+
 
 void initLETIMER0() {
   uint32_t temp;
@@ -30,9 +33,27 @@ void initLETIMER0() {
   };
   LETIMER_Init (LETIMER0, &letimerInitData); // initialize the timer
   LETIMER_CompareSet(LETIMER0, 0, COMP0_VALUE_TO_LOAD); // Load COMP0 (top)
-  LETIMER_CompareSet(LETIMER0, 1, COMP1_VALUE_TO_LOAD); // Load COMP1
+  //LETIMER_CompareSet(LETIMER0, 1, COMP1_VALUE_TO_LOAD); // Load COMP1
   LETIMER_IntClear (LETIMER0, 0xFFFFFFFF);  // Clear all IRQ flags in the LETIMER0 IF status register
-  temp = LETIMER_IEN_UF | LETIMER_IEN_COMP1;  // Set UF and COMP1 in LETIMER0_IEN, so that the timer will generate IRQs to the NVIC.
+  temp = LETIMER_IEN_UF;  // Set UF and COMP1 in LETIMER0_IEN, so that the timer will generate IRQs to the NVIC.
   LETIMER_IntEnable (LETIMER0, temp);
   LETIMER_Enable (LETIMER0, true);  // Enable the timer to starting counting down
+}
+
+void timerWaitUs(uint32_t us_wait) {
+  uint32_t ms_wait = us_wait/1000;
+  uint32_t ticks = (ms_wait * ACTUAL_CLK_FREQ)/(1000);
+
+  if((ticks < 1) | (ticks > COMP0_VALUE_TO_LOAD)) { // The ticks range that the timer can support is [1, COMP0_VALUE_TO_LOAD]
+      LOG_ERROR("The us_wait value %lu is out of range", us_wait);
+      return;
+  }
+
+  uint32_t cur_cnt = LETIMER_CounterGet(LETIMER0);
+
+  if(cur_cnt > ticks) {
+      while(LETIMER_CounterGet(LETIMER0) > (cur_cnt - ticks));
+  } else {
+      while(LETIMER_CounterGet(LETIMER0) != ((COMP0_VALUE_TO_LOAD - ticks) + cur_cnt)); // Handle wrap around
+  }
 }

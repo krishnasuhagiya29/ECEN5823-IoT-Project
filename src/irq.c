@@ -10,16 +10,18 @@
 #include "em_letimer.h"
 #include "irq.h"
 #include "gpio.h"
+#include "scheduler.h"
 
 void LETIMER0_IRQHandler(void) {
   int flags;
   flags = LETIMER_IntGetEnabled(LETIMER0);
   LETIMER_IntClear(LETIMER0, flags);
   if (flags & LETIMER_IF_UF) {
-      gpioLed0SetOff(); // Turn the LED off every 2.25 seconds i.e., when underflow is detected
+      schedulerSetEventUF();
+      //gpioLed0SetOff(); // Turn the LED off every 2.25 seconds i.e., when underflow is detected
   }
 
-  if (flags & LETIMER_IF_COMP1) {
+  /*if (flags & LETIMER_IF_COMP1) {
       gpioLed0SetOn();  // Turn the LED for 175 milliseconds i.e., when COMP1 interrupt is triggered
-  }
+  }*/
 } // LETIMER0_IRQHandler

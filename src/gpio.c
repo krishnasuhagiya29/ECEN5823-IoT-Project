@@ -41,6 +41,8 @@
 #define LED0_pin   (4)
 #define LED1_pin   (5)
 
+#define si7021_port (gpioPortD)
+#define si7021_pin  (15)
 
 
 // Set GPIO drive strengths and modes of operation
@@ -54,6 +56,8 @@ void gpioInit()
 	// Set the 2 GPIOs mode of operation
 	GPIO_PinModeSet(LED_port, LED0_pin, gpioModePushPull, false);
 	GPIO_PinModeSet(LED_port, LED1_pin, gpioModePushPull, false);
+
+	GPIO_PinModeSet(si7021_port, si7021_pin, gpioModePushPull, false);
 
 
 } // gpioInit()
@@ -80,6 +84,16 @@ void gpioLed1SetOn()
 void gpioLed1SetOff()
 {
 	GPIO_PinOutClear(LED_port, LED1_pin);
+}
+
+void gpioSi7021SetOn()
+{
+  GPIO_PinOutSet(si7021_port, si7021_pin);
+}
+
+void gpioSi7021SetOff()
+{
+  GPIO_PinOutClear(si7021_port, si7021_pin);
 }
 
 

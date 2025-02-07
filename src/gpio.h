@@ -37,7 +37,8 @@ void gpioLed0SetOn();
 void gpioLed0SetOff();
 void gpioLed1SetOn();
 void gpioLed1SetOff();
-
+void gpioSi7021SetOn();
+void gpioSi7021SetOff();
 
 
 

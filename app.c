@@ -57,9 +57,11 @@
 
 #include "src/ble_device_type.h"
 #include "src/gpio.h"
+#include "src/i2c.h"
 #include "src/lcd.h"
 #include "src/timers.h"
 #include "src/oscillators.h"
+#include "src/scheduler.h"
 
 
 // Students: Here is an example of how to correctly include logging functions in
@@ -169,6 +171,8 @@ SL_WEAK void app_init(void)
 
   initLETIMER0();
 
+  initI2C();
+
 #if (LOWEST_ENERGY_MODE==EM1)
   sl_power_manager_add_em_requirement(SL_POWER_MANAGER_EM1);
 #elif (LOWEST_ENERGY_MODE==EM2)
@@ -213,7 +217,22 @@ SL_WEAK void app_process_action(void)
   // Notice: This function is not passed or has access to Bluetooth stack events.
   //         We will create/use a scheme that is far more energy efficient in
   //         later assignments.
-
+  uint32_t evt;
+  evt = getNextEvent();
+  switch (evt) {
+    case evtLETIMER0_UF:
+      //gpioLed0SetOff();
+      si7021_power_on();
+      timerWaitUs(80000); // Powerup time
+      send_I2C_command();
+      timerWaitUs(11000); // Conversion time
+      read_I2C_response();
+      si7021_power_off();
+      break;
+    //case evtLETIMER0_COMP1:
+      //gpioLed0SetOn
+      //break;
+  } // switch
 } // app_process_action()
 
 

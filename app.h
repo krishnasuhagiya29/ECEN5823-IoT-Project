@@ -55,10 +55,10 @@
 
 // Only define 1 of these to define the lowest energy mode
 // EM0 = highest energy mode, EM3 = lowest energy mode
-#define LOWEST_ENERGY_MODE EM0
+//#define LOWEST_ENERGY_MODE EM0
 //#define LOWEST_ENERGY_MODE EM1
 //#define LOWEST_ENERGY_MODE EM2
-//#define LOWEST_ENERGY_MODE EM3
+#define LOWEST_ENERGY_MODE EM3
 
 #if (LOWEST_ENERGY_MODE==EM3)
 #define CLOCK_FREQ  1000
@@ -67,6 +67,11 @@
 #define CLOCK_FREQ  32768
 #define PRESCALER_VALUE 4
 #endif
+
+typedef enum {
+  evtLETIMER0_UF = 1,
+  //evtLETIMER0_COMP1 = 2,
+} event_type_t;
 
 /**************************************************************************//**
  * Application Init.
