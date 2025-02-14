@@ -11,8 +11,10 @@
 #define OSCILLATORS_H_
 
 /****************************************************************************
- * Oscillator Init.
+ * @brief   Initializes the oscillator for system clock configuration.
+ * @param   None
+ * @return  None
  ****************************************************************************/
-void initOscillator();
+void initOscillator(void);
 
 #endif /* OSCILLATORS_H_ */

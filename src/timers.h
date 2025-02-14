@@ -19,13 +19,24 @@
 #define COMP1_VALUE_TO_LOAD (LETIMER_ON_TIME_MS * ACTUAL_CLK_FREQ)/1000
 
 /****************************************************************************
- * LETIMER0 Init.
+ * @brief   Initializes the LETIMER0 peripheral.
+ * @param   None
+ * @return  None
  ****************************************************************************/
-void initLETIMER0();
+void initLETIMER0(void);
 
 /****************************************************************************
- * Timer wait function for microseconds wait.
+ * @brief   Waits for the specified time in microseconds using polling mode.
+ * @param   us_wait The wait time in microseconds.
+ * @return  None
  ****************************************************************************/
-void timerWaitUs(uint32_t us_wait);
+void timerWaitUs_polled(uint32_t us_wait);
+
+/****************************************************************************
+ * @brief   Waits for the specified time in microseconds using interrupt mode.
+ * @param   us_wait The wait time in microseconds.
+ * @return  None
+ ****************************************************************************/
+void timerWaitUs_irq(uint32_t us_wait);
 
 #endif /* TIMERS_H_ */

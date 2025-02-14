@@ -10,9 +10,20 @@
 #ifndef IRQ_H_
 #define IRQ_H_
 
+#include <stdint.h>
+
 /****************************************************************************
- * LETIMER0 interrupt handler.
+ * @brief   Handles the LETIMER0 interrupt.
+ * @param   None
+ * @return  None
  ****************************************************************************/
 void LETIMER0_IRQHandler(void);
+
+/****************************************************************************
+ * @brief   Returns the elapsed time in milliseconds based on LETIMER0.
+ * @param   None
+ * @return  Elapsed time in milliseconds.
+ ****************************************************************************/
+uint32_t letimerMilliseconds(void);
 
 #endif /* IRQ_H_ */

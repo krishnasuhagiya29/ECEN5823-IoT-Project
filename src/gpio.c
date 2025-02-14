@@ -74,7 +74,6 @@ void gpioLed0SetOff()
 	GPIO_PinOutClear(LED_port, LED0_pin);
 }
 
-
 void gpioLed1SetOn()
 {
 	GPIO_PinOutSet(LED_port, LED1_pin);

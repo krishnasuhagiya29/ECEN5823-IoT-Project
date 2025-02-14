@@ -70,7 +70,8 @@
 
 typedef enum {
   evtLETIMER0_UF = 1,
-  //evtLETIMER0_COMP1 = 2,
+  evtLETIMER0_COMP1 = 2,
+  evtI2C0_done = 4,
 } event_type_t;
 
 /**************************************************************************//**

@@ -13,7 +13,7 @@
 #include "oscillators.h"
 #include "app.h"
 
-void initOscillator() {
+void initOscillator(void) {
 #if (LOWEST_ENERGY_MODE==EM3)
   CMU_OscillatorEnable(cmuOsc_ULFRCO, true, true);
   CMU_ClockSelectSet(cmuClock_LFA, cmuSelect_ULFRCO);

@@ -11,13 +11,38 @@
 #define SCHEDULER_H_
 
 /****************************************************************************
- * A scheduler function to set the an LETIMER0 underflow event .
+ * @brief   Sets the LETIMER0 underflow event in the scheduler.
+ * @param   None
+ * @return  None
  ****************************************************************************/
-void schedulerSetEventUF();
+void schedulerSetEventUF(void);
 
 /****************************************************************************
- * A function to get the next event.
+ * @brief   Sets the LETIMER0 COMP1 event in the scheduler.
+ * @param   None
+ * @return  None
  ****************************************************************************/
-uint32_t getNextEvent();
+void schedulerSetEventCOMP1(void);
+
+/****************************************************************************
+ * @brief   Sets the I2C0 done event in the scheduler.
+ * @param   None
+ * @return  None
+ ****************************************************************************/
+void schedulerSetI2C0Event(void);
+
+/****************************************************************************
+ * @brief   Retrieves the next scheduled event.
+ * @param   None
+ * @return  The next event as a 32-bit unsigned integer.
+ ****************************************************************************/
+uint32_t getNextEvent(void);
+
+/****************************************************************************
+ * @brief   State machine for handling temperature measurement events.
+ * @param   event The event to be processed.
+ * @return  None
+ ****************************************************************************/
+void temperature_state_machine(uint32_t event);
 
 #endif /* SCHEDULER_H_ */

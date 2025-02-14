@@ -14,28 +14,54 @@
 #define SI7021_DEVICE_ADDR  0x40
 
 /****************************************************************************
- * Turn on power to the Si7021.
+ * @brief   Turns on power to the Si7021 sensor.
+ * @param   None
+ * @return  None
  ****************************************************************************/
-void si7021_power_on();
+void si7021_power_on(void);
 
 /****************************************************************************
- * Turn off power to the Si7021.
+ * @brief   Turns off power to the Si7021 sensor.
+ * @param   None
+ * @return  None
  ****************************************************************************/
-void si7021_power_off();
+void si7021_power_off(void);
 
 /****************************************************************************
- * Initialize the I2C for Si7021.
+ * @brief   Initializes the I2C interface for communication with the Si7021.
+ * @param   None
+ * @return  None
  ****************************************************************************/
-void initI2C();
+void initI2C(void);
 
 /****************************************************************************
-* I2C send command to the Si7021 to take a temperature measurement
-*****************************************************************************/
-void send_I2C_command();
+ * @brief   Sends an I2C command to the Si7021 to initiate a temperature
+ *          measurement.
+ * @param   None
+ * @return  None
+ ****************************************************************************/
+void send_I2C_command(void);
 
 /****************************************************************************
-* I2C read command to the Si7021 to read the temperature value
-*****************************************************************************/
-void read_I2C_response();
+ * @brief   Reads the temperature measurement result from the Si7021 sensor
+ *          via I2C.
+ * @param   None
+ * @return  None
+ ****************************************************************************/
+void read_I2C_response(void);
+
+/****************************************************************************
+ * @brief   Retrieves the temperature value in Celsius after measurement.
+ * @param   None
+ * @return  Temperature value in Celsius.
+ ****************************************************************************/
+uint32_t get_temp_value(void);
+
+/****************************************************************************
+ * @brief   State machine for temperature measurement based on the event
+ * @param   event The event
+ * @return  None
+****************************************************************************/
+void temperature_state_machine(uint32_t event);
 
 #endif /* I2C_H_ */

@@ -11,12 +11,13 @@
 #include <stdbool.h>
 #include "em_letimer.h"
 #include "timers.h"
+#include "gpio.h"
 
 #define INCLUDE_LOG_DEBUG 1
 #include "src/log.h"
 
 
-void initLETIMER0() {
+void initLETIMER0(void) {
   uint32_t temp;
 
   const LETIMER_Init_TypeDef letimerInitData = {
@@ -40,7 +41,7 @@ void initLETIMER0() {
   LETIMER_Enable (LETIMER0, true);  // Enable the timer to starting counting down
 }
 
-void timerWaitUs(uint32_t us_wait) {
+void timerWaitUs_polled(uint32_t us_wait) {
   uint32_t ms_wait = us_wait/1000;
   uint32_t ticks = (ms_wait * ACTUAL_CLK_FREQ)/(1000);
 
@@ -56,4 +57,26 @@ void timerWaitUs(uint32_t us_wait) {
   } else {
       while(LETIMER_CounterGet(LETIMER0) != ((COMP0_VALUE_TO_LOAD - ticks) + cur_cnt)); // Handle wrap around
   }
+}
+
+void timerWaitUs_irq(uint32_t us_wait) {
+  uint32_t ms_wait = us_wait/1000;
+  uint32_t ticks = (ms_wait * ACTUAL_CLK_FREQ)/(1000);
+  uint32_t comp1_value_to_load = 0;
+
+  if((ticks < 1) | (ticks > COMP0_VALUE_TO_LOAD)) { // The ticks range that the timer can support is [1, COMP0_VALUE_TO_LOAD]
+      LOG_ERROR("The us_wait value %lu is out of range", us_wait);
+      return;
+  }
+
+  uint32_t cur_cnt = LETIMER_CounterGet(LETIMER0);
+
+  if(cur_cnt > ticks) {
+      comp1_value_to_load = cur_cnt - ticks;
+  } else {
+      comp1_value_to_load = (COMP0_VALUE_TO_LOAD - ticks) + cur_cnt; // Handle wrap around
+  }
+  LETIMER_CompareSet(LETIMER0, 1, comp1_value_to_load); // Load COMP1
+  LETIMER_IntClear (LETIMER0, 0xFFFFFFFF);  // Clear all IRQ flags in the LETIMER0 IF status register
+  LETIMER_IntEnable (LETIMER0, LETIMER_IEN_COMP1);
 }
