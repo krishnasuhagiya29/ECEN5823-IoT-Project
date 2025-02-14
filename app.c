@@ -171,6 +171,8 @@ SL_WEAK void app_init(void)
 
   initLETIMER0();
 
+  initI2C();
+
 #if (LOWEST_ENERGY_MODE==EM1)
   sl_power_manager_add_em_requirement(SL_POWER_MANAGER_EM1);
 #elif (LOWEST_ENERGY_MODE==EM2)

@@ -91,7 +91,6 @@ void temperature_state_machine(uint32_t event) {
       next_state = STATE_SI7021_ON;
       if(event == evtLETIMER0_COMP1){
           sl_power_manager_add_em_requirement(SL_POWER_MANAGER_EM1);
-          initI2C();
           send_I2C_command();
           next_state = STATE_I2C_SEND;
       }
@@ -115,8 +114,8 @@ void temperature_state_machine(uint32_t event) {
     case STATE_I2C_READ_COMPLETE:
       next_state = STATE_I2C_READ_COMPLETE;
       if(event == evtI2C0_done) {
-          sl_power_manager_remove_em_requirement(SL_POWER_MANAGER_EM1);
           si7021_power_off();
+          sl_power_manager_remove_em_requirement(SL_POWER_MANAGER_EM1);
           uint32_t temp = get_temp_value();
           LOG_INFO ("Temperature=%lu\r\n", temp);
           next_state = STATE_IDLE;
