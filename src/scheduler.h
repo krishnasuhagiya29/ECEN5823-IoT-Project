@@ -10,6 +10,8 @@
 #ifndef SCHEDULER_H_
 #define SCHEDULER_H_
 
+#include "sl_bt_api.h"
+
 /****************************************************************************
  * @brief   Sets the LETIMER0 underflow event in the scheduler.
  * @param   None
@@ -40,9 +42,9 @@ uint32_t getNextEvent(void);
 
 /****************************************************************************
  * @brief   State machine for handling temperature measurement events.
- * @param   event The event to be processed.
+ * @param   Pointer to the sl_bt_msg_t structure.
  * @return  None
  ****************************************************************************/
-void temperature_state_machine(uint32_t event);
+void temperature_state_machine(sl_bt_msg_t* evt);
 
 #endif /* SCHEDULER_H_ */

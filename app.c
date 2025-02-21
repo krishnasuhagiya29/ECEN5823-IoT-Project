@@ -56,6 +56,7 @@
 #include "sl_status.h"             // for sl_status_print()
 
 #include "src/ble_device_type.h"
+#include "src/ble.h"
 #include "src/gpio.h"
 #include "src/i2c.h"
 #include "src/lcd.h"
@@ -173,6 +174,11 @@ SL_WEAK void app_init(void)
 
   initI2C();
 
+#if (LOWEST_ENERGY_MODE == EM3)
+  LOG_INFO("BT stack does not work in EM3, switching to EM2.")
+  LOWEST_ENERGY_MODE = EM2;
+#endif
+
 #if (LOWEST_ENERGY_MODE==EM1)
   sl_power_manager_add_em_requirement(SL_POWER_MANAGER_EM1);
 #elif (LOWEST_ENERGY_MODE==EM2)
@@ -214,9 +220,9 @@ SL_WEAK void app_process_action(void)
   // Notice: This function is not passed or has access to Bluetooth stack events.
   //         We will create/use a scheme that is far more energy efficient in
   //         later assignments.
-  uint32_t evt;
-  evt = getNextEvent();
-  temperature_state_machine(evt);
+  //uint32_t evt;
+  //evt = getNextEvent();
+  //temperature_state_machine(evt);
 } // app_process_action()
 
 
@@ -237,16 +243,16 @@ void sl_bt_on_event(sl_bt_msg_t *evt)
 {
 
   // Just a trick to hide a compiler warning about unused input parameter evt.
-  (void) evt;
+  //(void) evt;
 
   // For A5 onward:
   // Some events require responses from our application code,
   // and don’t necessarily advance our state machines.
   // For A5 uncomment the next 2 function calls
-  // handle_ble_event(evt); // put this code in ble.c/.h
+  handle_ble_event(evt); // put this code in ble.c/.h
 
   // sequence through states driven by events
-  // state_machine(evt);    // put this code in scheduler.c/.h
+  temperature_state_machine(evt);    // put this code in scheduler.c/.h
 
 
 } // sl_bt_on_event()

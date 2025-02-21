@@ -57,8 +57,8 @@
 // EM0 = highest energy mode, EM3 = lowest energy mode
 //#define LOWEST_ENERGY_MODE EM0
 //#define LOWEST_ENERGY_MODE EM1
-//#define LOWEST_ENERGY_MODE EM2
-#define LOWEST_ENERGY_MODE EM3
+#define LOWEST_ENERGY_MODE EM2
+//#define LOWEST_ENERGY_MODE EM3
 
 #if (LOWEST_ENERGY_MODE==EM3)
 #define CLOCK_FREQ  1000

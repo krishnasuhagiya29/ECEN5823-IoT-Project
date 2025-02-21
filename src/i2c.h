@@ -57,11 +57,4 @@ void read_I2C_response(void);
  ****************************************************************************/
 uint32_t get_temp_value(void);
 
-/****************************************************************************
- * @brief   State machine for temperature measurement based on the event
- * @param   event The event
- * @return  None
-****************************************************************************/
-void temperature_state_machine(uint32_t event);
-
 #endif /* I2C_H_ */
