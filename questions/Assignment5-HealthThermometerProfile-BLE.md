@@ -29,7 +29,7 @@ See [Mastering Markdown](https://guides.github.com/features/mastering-markdown/)
    ![avg_current_between_connection_intervals](Images/assignment5_Q5.jpg)  
 
 6. If possible, provide screen shot verifying the slave latency matches what was reported when you logged the values from event = gecko_evt_le_connection_parameters_id.
-   Answer: It can be observed from the screenshot that there is a connection event right in the middle of when the 7021 is taking a temp measurement. The indication is queued and will be transmitted to the Client in the next connection event. So, it matches with the latency value 0. The peak current is higher on that 3rd connection event. 
+   Answer: The screenshot shows a connection event occurring in the middle of the 7021's temperature measurement. The indication is queued and will be transmitted to the client in the next connection event, aligning with a latency value of 0. The peak current is noticeably higher during the third connection event because of that. While we request the master to set the connection parameters from the `handle_ble_Event` function, the master has the ability to override these parameters. As a result, the slave latency value remains 0 instead of the expected 4, which was set in `handle_ble_Event`.
    <br>Screenshot:  
    ![slave_latency](Images/assignment5_Q6.jpg)  
 
