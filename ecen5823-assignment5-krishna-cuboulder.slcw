@@ -1,0 +1,6 @@
+---
+label: "ecen5823-assignment5-krishna-cuboulder"
+project:
+- id: "main"
+  path: "ecen5823-assignment5-krishna-cuboulder1.slcp"
+  output: "."
