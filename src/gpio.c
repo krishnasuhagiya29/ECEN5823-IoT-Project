@@ -47,7 +47,11 @@
 #define LCD_port (gpioPortD)
 #define LCD_pin_extcomin  (13)
 
-
+/****************************************************************************
+ * @brief   Initializes the GPIO pins.
+ * @param   None
+ * @return  None
+ ****************************************************************************/
 // Set GPIO drive strengths and modes of operation
 void gpioInit()
 {
@@ -67,39 +71,71 @@ void gpioInit()
 
 } // gpioInit()
 
-
+/****************************************************************************
+ * @brief   Turns on LED0.
+ * @param   None
+ * @return  None
+ ****************************************************************************/
 void gpioLed0SetOn()
 {
 	GPIO_PinOutSet(LED_port, LED0_pin);
 }
 
-
+/****************************************************************************
+ * @brief   Turns off LED0.
+ * @param   None
+ * @return  None
+ ****************************************************************************/
 void gpioLed0SetOff()
 {
 	GPIO_PinOutClear(LED_port, LED0_pin);
 }
 
+/****************************************************************************
+ * @brief   Turns on LED1.
+ * @param   None
+ * @return  None
+ ****************************************************************************/
 void gpioLed1SetOn()
 {
 	GPIO_PinOutSet(LED_port, LED1_pin);
 }
 
-
+/****************************************************************************
+ * @brief   Turns off LED1.
+ * @param   None
+ * @return  None
+ ****************************************************************************/
 void gpioLed1SetOff()
 {
 	GPIO_PinOutClear(LED_port, LED1_pin);
 }
 
+/****************************************************************************
+ * @brief   Enables power to the Si7021 sensor.
+ * @param   None
+ * @return  None
+ ****************************************************************************/
 void gpioSi7021SetOn()
 {
   GPIO_PinOutSet(si7021_port, si7021_pin);
 }
 
+/****************************************************************************
+ * @brief   Disables power to the Si7021 sensor.
+ * @param   None
+ * @return  None
+ ****************************************************************************/
 void gpioSi7021SetOff()
 {
   GPIO_PinOutClear(si7021_port, si7021_pin);
 }
 
+/****************************************************************************
+ * @brief   Sets the state of the display EXTCOMIN signal.
+ * @param   state  Boolean value indicating the desired EXTCOMIN state.
+ * @return  None
+ ****************************************************************************/
 void gpioSetDisplayExtcomin(bool state)
 {
   if(state) {
