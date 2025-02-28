@@ -56,22 +56,22 @@ LED measurement - Period
 LED measurement - LED on time   
 ![em3_led_ledOnTime][em3_led_ledOnTime]  
 
-[em0_avg_current_period]: Images/assignment2_EM0_LEDperiod.jpg "em0_avg_current_period"
-[em0_avg_current_ledoff]: Images/assignment2_EM0_LEDoff.jpg "em0_avg_current_ledoff"
-[em0_avg_current_ledon]: Images/assignment2_EM0_LEDon.jpg "em0_avg_current_ledon"
+[em0_avg_current_period]: ../Screenshots/assignment2_EM0_LEDperiod.jpg "em0_avg_current_period"
+[em0_avg_current_ledoff]: ../Screenshots/assignment2_EM0_LEDoff.jpg "em0_avg_current_ledoff"
+[em0_avg_current_ledon]: ../Screenshots/assignment2_EM0_LEDon.jpg "em0_avg_current_ledon"
 
-[em1_avg_current_period]: Images/assignment2_EM1_LEDperiod.jpg "em1_avg_current_period"
-[em1_avg_current_ledoff]: Images/assignment2_EM1_LEDoff.jpg "em1_avg_current_ledoff"
-[em1_avg_current_ledon]: Images/assignment2_EM1_LEDon.jpg "em1_avg_current_ledon"
+[em1_avg_current_period]: ../Screenshots/assignment2_EM1_LEDperiod.jpg "em1_avg_current_period"
+[em1_avg_current_ledoff]: ../Screenshots/assignment2_EM1_LEDoff.jpg "em1_avg_current_ledoff"
+[em1_avg_current_ledon]: ../Screenshots/assignment2_EM1_LEDon.jpg "em1_avg_current_ledon"
 
-[em2_avg_current_period]: Images/assignment2_EM2_LEDperiod.jpg "em2_avg_current_period"
-[em2_avg_current_ledoff]: Images/assignment2_EM2_LEDoff.jpg "em2_avg_current_ledoff"
-[em2_avg_current_ledon]: Images/assignment2_EM2_LEDon.jpg "em2_avg_current_ledon"
-[em2_led_period]: Images/assignment2_EM2_LEDperiod.jpg "em2_led_period"
-[em2_led_ledOnTime]: Images/assignment2_EM2_LEDon.jpg "em2_led_ledOnTime"
+[em2_avg_current_period]: ../Screenshots/assignment2_EM2_LEDperiod.jpg "em2_avg_current_period"
+[em2_avg_current_ledoff]: ../Screenshots/assignment2_EM2_LEDoff.jpg "em2_avg_current_ledoff"
+[em2_avg_current_ledon]: ../Screenshots/assignment2_EM2_LEDon.jpg "em2_avg_current_ledon"
+[em2_led_period]: ../Screenshots/assignment2_EM2_LEDperiod.jpg "em2_led_period"
+[em2_led_ledOnTime]: ../Screenshots/assignment2_EM2_LEDon.jpg "em2_led_ledOnTime"
 
-[em3_avg_current_period]: Images/assignment2_EM3_LEDperiod.jpg "em3_avg_current_period"
-[em3_avg_current_ledoff]: Images/assignment2_EM3_LEDoff.jpg "em3_avg_current_ledoff"
-[em3_avg_current_ledon]: Images/assignment2_EM3_LEDon.jpg "em3_avg_current_ledon"
-[em3_led_period]: Images/assignment2_EM3_LEDperiod.jpg "em3_led_period"
-[em3_led_ledOnTime]: Images/assignment2_EM3_LEDon.jpg "em3_led_ledOnTime"
+[em3_avg_current_period]: ../Screenshots/assignment2_EM3_LEDperiod.jpg "em3_avg_current_period"
+[em3_avg_current_ledoff]: ../Screenshots/assignment2_EM3_LEDoff.jpg "em3_avg_current_ledoff"
+[em3_avg_current_ledon]: ../Screenshots/assignment2_EM3_LEDon.jpg "em3_avg_current_ledon"
+[em3_led_period]: ../Screenshots/assignment2_EM3_LEDperiod.jpg "em3_led_period"
+[em3_led_ledOnTime]: ../Screenshots/assignment2_EM3_LEDon.jpg "em3_led_ledOnTime"

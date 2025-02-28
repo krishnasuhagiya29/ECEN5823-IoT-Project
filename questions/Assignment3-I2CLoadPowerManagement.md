@@ -8,19 +8,19 @@ See [Mastering Markdown](https://guides.github.com/features/mastering-markdown/)
 1. What is the average current per period? (Remember, once you have measured your average current, average current is average current over all time. Average current doesn’t carry with it the units of the timespan over which it was measured).
    Answer: 159.05 uA
    <br>Screenshot:  
-   ![Avg_current_per_period](Images/assignment3_EM3_avg_current_per_period.jpg)  
+   ![Avg_current_per_period](../Screenshots/assignment3_EM3_avg_current_per_period.jpg)  
    
 2. What is the ave current from the time we sleep the MCU to EM3 until we power-on the 7021 in response to the LETIMER0 UF IRQ? 
    Answer: 8.77 uA
    <br>Screenshot: 
-   ![Avg_current_lpmOFF](Images/assignment3_EM3_avg_current_lpmOFF.jpg)
+   ![Avg_current_lpmOFF](../Screenshots/assignment3_EM3_avg_current_lpmOFF.jpg)
    
 3. What is the ave current from the time we power-on the 7021 until the polled implementation of timerWaitUs() returns, indicating that the 7021's maximum time for conversion (measurement) has expired.
    Answer: 4.85 mA
    <br>Screenshot: 
-   ![Avg_current_lpmON](Images/assignment3_EM3_avg_current_lpmON.jpg)
+   ![Avg_current_lpmON](../Screenshots/assignment3_EM3_avg_current_lpmON.jpg)
    
 4. How long is the Si7021 Powered On for 1 temperature reading?  
    Answer: 96 ms
    <br>Screenshot: 
-   ![Time_lpmON](Images/assignment3_EM3_avg_current_lpmON.jpg)
+   ![Time_lpmON](../Screenshots/assignment3_EM3_avg_current_lpmON.jpg)
