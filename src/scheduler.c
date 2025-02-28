@@ -152,7 +152,7 @@ void temperature_state_machine(sl_bt_msg_t* evt) {
               //LOG_INFO("In STATE_I2C_READ_COMPLETE\n");
               next_state = STATE_I2C_READ_COMPLETE;
               if(evt->data.evt_system_external_signal.extsignals == evtI2C0_done) {
-                  si7021_power_off();
+                  //si7021_power_off();
                   sl_power_manager_remove_em_requirement(SL_POWER_MANAGER_EM1);
                   ble_send_temp_value();
                   //uint32_t temp = get_temp_value();

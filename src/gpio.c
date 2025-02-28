@@ -44,6 +44,9 @@
 #define si7021_port (gpioPortD)
 #define si7021_pin  (15)
 
+#define LCD_port (gpioPortD)
+#define LCD_pin_extcomin  (13)
+
 
 // Set GPIO drive strengths and modes of operation
 void gpioInit()
@@ -52,12 +55,14 @@ void gpioInit()
     // in a "Port" share the same drive strength setting. 
 	//GPIO_DriveStrengthSet(LED_port, gpioDriveStrengthStrongAlternateStrong); // Strong, 10mA
 	GPIO_DriveStrengthSet(LED_port, gpioDriveStrengthWeakAlternateWeak); // Weak, 1mA
+	GPIO_DriveStrengthSet(LCD_port, gpioDriveStrengthWeakAlternateWeak); // Weak, 1mA
 	
 	// Set the 2 GPIOs mode of operation
 	GPIO_PinModeSet(LED_port, LED0_pin, gpioModePushPull, false);
 	GPIO_PinModeSet(LED_port, LED1_pin, gpioModePushPull, false);
 
 	GPIO_PinModeSet(si7021_port, si7021_pin, gpioModePushPull, false);
+	GPIO_PinModeSet(LCD_port, LCD_pin_extcomin, gpioModePushPull, false);
 
 
 } // gpioInit()
@@ -93,6 +98,15 @@ void gpioSi7021SetOn()
 void gpioSi7021SetOff()
 {
   GPIO_PinOutClear(si7021_port, si7021_pin);
+}
+
+void gpioSetDisplayExtcomin(bool state)
+{
+  if(state) {
+      GPIO_PinOutSet(LCD_port, LCD_pin_extcomin);
+  } else {
+      GPIO_PinOutClear(LCD_port, LCD_pin_extcomin);
+  }
 }
 
 

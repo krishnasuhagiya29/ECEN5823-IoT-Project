@@ -8,6 +8,7 @@
 
 #include "ble.h"
 #include "i2c.h"
+#include "lcd.h"
 
 #define INTERVAL_MIN  400u  // 250/0.625
 #define INTERVAL_MAX  400u  // 250/0.625
@@ -56,12 +57,13 @@ void ble_send_temp_value(void) {
   }
 
   if ((ble_data->connection_open == true) && (ble_data->ok_to_send_htm_indications == true) && (ble_data->indication_in_flight == false)) {
-  sc = sl_bt_gatt_server_send_indication(ble_data->connection_handle, gattdb_temperature_measurement, 5, &htm_temperature_buffer[0]);
-  if (sc != SL_STATUS_OK) {
-      LOG_ERROR("sl_bt_gatt_server_send_indication failed with error code: 0x%x", (unsigned int)sc);
-  } else {
-      ble_data->indication_in_flight = true;
-  }
+    sc = sl_bt_gatt_server_send_indication(ble_data->connection_handle, gattdb_temperature_measurement, 5, &htm_temperature_buffer[0]);
+    if (sc != SL_STATUS_OK) {
+        LOG_ERROR("sl_bt_gatt_server_send_indication failed with error code: 0x%x", (unsigned int)sc);
+    } else {
+        ble_data->indication_in_flight = true;
+    }
+    displayPrintf(DISPLAY_ROW_TEMPVALUE, "Temp=%d", temperature_in_c);
   }
 }
 
@@ -76,10 +78,14 @@ void handle_ble_event(sl_bt_msg_t *evt) {
   // Handle stack events
   switch (SL_BT_MSG_ID(evt->header)) {
     case sl_bt_evt_system_boot_id:
+      displayInit();
+      displayPrintf(DISPLAY_ROW_NAME, "Server");
+
       sc = sl_bt_system_get_identity_address(&ble_data->myAddress, &ble_data->myAddress_type);
       if(sc != SL_STATUS_OK) {
           LOG_ERROR("sl_bt_system_get_identity_address failed with error code: 0x%x", (unsigned int)sc);
       }
+      displayPrintf(DISPLAY_ROW_BTADDR, "%x:%x:%x:%x:%x:%x", ble_data->myAddress.addr[0], ble_data->myAddress.addr[1], ble_data->myAddress.addr[2], ble_data->myAddress.addr[3], ble_data->myAddress.addr[4], ble_data->myAddress.addr[5]);
 
       sc = sl_bt_advertiser_create_set(&ble_data->advertisingSetHandle);
       if(sc != SL_STATUS_OK) {
@@ -100,6 +106,8 @@ void handle_ble_event(sl_bt_msg_t *evt) {
       if(sc != SL_STATUS_OK) {
           LOG_ERROR("sl_bt_legacy_advertiser_start failed with error code: 0x%x", (unsigned int)sc);
       }
+      displayPrintf(DISPLAY_ROW_CONNECTION, "Advertising");
+      displayPrintf(DISPLAY_ROW_ASSIGNMENT, "A6");
       break;
     case sl_bt_evt_connection_opened_id:
       ble_data->connection_open = true;
@@ -114,6 +122,7 @@ void handle_ble_event(sl_bt_msg_t *evt) {
       if(sc != SL_STATUS_OK) {
           LOG_ERROR("sl_bt_connection_set_parameters failed with error code: 0x%x", (unsigned int)sc);
       }
+      displayPrintf(DISPLAY_ROW_CONNECTION, "Connected");
       break;
     case sl_bt_evt_connection_closed_id:
       ble_data->connection_open = false;
@@ -126,6 +135,8 @@ void handle_ble_event(sl_bt_msg_t *evt) {
       if(sc != SL_STATUS_OK) {
           LOG_ERROR("sl_bt_legacy_advertiser_start failed with error code: 0x%x", (unsigned int)sc);
       }
+      displayPrintf(DISPLAY_ROW_CONNECTION, "Advertising");
+      displayPrintf(DISPLAY_ROW_TEMPVALUE, "");
       break;
     case sl_bt_evt_connection_parameters_id:
       // Commented below log out as asked after observing
@@ -133,12 +144,16 @@ void handle_ble_event(sl_bt_msg_t *evt) {
       break;
     case sl_bt_evt_system_external_signal_id:
       break;
+    case sl_bt_evt_system_soft_timer_id:
+      displayUpdate();
+      break;
     case sl_bt_evt_gatt_server_characteristic_status_id:
       if(evt->data.evt_gatt_server_characteristic_status.characteristic == gattdb_temperature_measurement) {
         if (evt->data.evt_gatt_server_characteristic_status.status_flags == sl_bt_gatt_server_client_config) {
             // check if indication flag is disabled
             if(evt->data.evt_gatt_server_characteristic_status.client_config_flags == gatt_disable) {
                 ble_data->ok_to_send_htm_indications = false;
+                displayPrintf(DISPLAY_ROW_TEMPVALUE, "");
             }
             //check if indication flag is enabled
             if(evt->data.evt_gatt_server_characteristic_status.client_config_flags == gatt_indication) {
