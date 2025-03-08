@@ -40,11 +40,19 @@ void schedulerSetI2C0Event(void);
  ****************************************************************************/
 uint32_t getNextEvent(void);
 
+#if DEVICE_IS_BLE_SERVER
 /****************************************************************************
- * @brief   State machine for handling temperature measurement events.
+ * @brief   State machine for handling temperature measurement events on the server side.
  * @param   Pointer to the sl_bt_msg_t structure.
  * @return  None
  ****************************************************************************/
 void temperature_state_machine(sl_bt_msg_t* evt);
-
+#else
+/****************************************************************************
+ * @brief   State machine for handling temperature measurement events on the client side.
+ * @param   Pointer to the sl_bt_msg_t structure.
+ * @return  None
+ ****************************************************************************/
+void discovery_state_machine(sl_bt_msg_t* evt);
+#endif
 #endif /* SCHEDULER_H_ */

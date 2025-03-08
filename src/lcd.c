@@ -322,7 +322,7 @@ void displayInit()
 	  sl_status_t          timer_response;
 	  timer_response = sl_bt_system_set_lazy_soft_timer(NO_OF_TICKS, SLACK_TIME, TIMER_HANDLE, TIMER_MODE);
 	  if (timer_response != SL_STATUS_OK) {
-	      LOG_ERROR("sl_bt_system_set_lazy_soft_timer failed with error code: 0x%x", timer_response);
+	      LOG_ERROR("sl_bt_system_set_lazy_soft_timer failed with error code: 0x%x", (unsigned int) timer_response);
     }
 
 

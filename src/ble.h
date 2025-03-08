@@ -16,6 +16,9 @@ typedef struct {
   bool ok_to_send_htm_indications; // true when client enabled indications
   bool indication_in_flight;  // true when an indication is in-flight
   // values unique for client
+  bool gatt_procedure_inprogress;
+  uint32_t service_handle;
+  uint16_t characteristic_handle;
 } ble_data_struct_t;
 
 /****************************************************************************

@@ -15,19 +15,36 @@
 #define INCLUDE_LOG_DEBUG 1
 #include "src/log.h"
 
+#include "ble_device_type.h"
 #include "ble.h"
 #include "i2c.h"
 #include "timers.h"
 
 static uint32_t events = 0;
 
+#if DEVICE_IS_BLE_SERVER
 typedef enum uint32_t {
   STATE_IDLE,
   STATE_SI7021_ON,
   STATE_I2C_SEND,
   STATE_I2C_SEND_COMPLETE,
-  STATE_I2C_READ_COMPLETE
+  STATE_I2C_READ_COMPLETE,
 } state_t;
+#else
+typedef enum uint32_t {
+  STATE_CLOSE,
+  STATE_OPEN,
+  STATE_DISCOVER_CHARACTERISTICS,
+  STATE_SET_NOTIFICATION,
+  STATE_WAIT,
+} state_t;
+
+// Reference: bt_soc_thermometer_client
+// Health Thermometer service UUID defined by Bluetooth SIG
+static const uint8_t thermo_service[2] = { 0x09, 0x18 };
+// Temperature Measurement characteristic UUID defined by Bluetooth SIG
+static const uint8_t thermo_char[2] = { 0x1c, 0x2a };
+#endif
 
 /****************************************************************************
  * @brief   Sets the LETIMER0 underflow event in the scheduler.
@@ -98,8 +115,9 @@ uint32_t getNextEvent(void) {
   return (theEvent);
 } // getNextEvent()
 
+#if DEVICE_IS_BLE_SERVER
 /****************************************************************************
- * @brief   State machine for handling temperature measurement events.
+ * @brief   State machine for handling temperature measurement events on the server side.
  * @param   Pointer to the sl_bt_msg_t structure.
  * @return  None
  ****************************************************************************/
@@ -164,4 +182,70 @@ void temperature_state_machine(sl_bt_msg_t* evt) {
       }
   }
 } // temperature_state_machine
-
+#else
+/****************************************************************************
+ * @brief   State machine for handling temperature measurement events on the client side.
+ * @param   Pointer to the sl_bt_msg_t structure.
+ * @return  None
+ ****************************************************************************/
+void discovery_state_machine(sl_bt_msg_t* evt) {
+  state_t current_state;
+  static state_t next_state = STATE_CLOSE;
+  ble_data_struct_t* ble_data = get_ble_data_ptr();
+  current_state = next_state;
+  sl_status_t sc;
+  switch(current_state) {
+    case STATE_CLOSE:
+      next_state = STATE_CLOSE;
+      if(SL_BT_MSG_ID(evt->header) == sl_bt_evt_connection_opened_id) {
+          ble_data->gatt_procedure_inprogress = true;
+          // Discover Health Thermometer service on the responder device. Reference: bt_soc_thermometer_client
+          sc = sl_bt_gatt_discover_primary_services_by_uuid(ble_data->connection_handle, sizeof(thermo_service), (const uint8_t*)thermo_service);
+          if(sc != SL_STATUS_OK) {
+              LOG_ERROR("sl_bt_gatt_discover_primary_services_by_uuid failed with error code: 0x%x", (unsigned int)sc);
+          }
+          next_state = STATE_OPEN;
+      }
+      break;
+    case STATE_OPEN:
+      next_state = STATE_OPEN;
+      if(SL_BT_MSG_ID(evt->header) == sl_bt_evt_gatt_procedure_completed_id) {
+          ble_data->gatt_procedure_inprogress = true;
+          sc = sl_bt_gatt_discover_characteristics_by_uuid(ble_data->connection_handle,
+                                                           ble_data->service_handle,
+                                                           sizeof(thermo_char),
+                                                           (const uint8_t*)thermo_char);
+          if(sc != SL_STATUS_OK) {
+              LOG_ERROR("sl_bt_gatt_discover_characteristics_by_uuid failed with error code: 0x%x", (unsigned int)sc);
+          }
+          next_state = STATE_DISCOVER_CHARACTERISTICS;
+      }
+      break;
+    case STATE_DISCOVER_CHARACTERISTICS:
+      next_state = STATE_DISCOVER_CHARACTERISTICS;
+      if(SL_BT_MSG_ID(evt->header) == sl_bt_evt_gatt_procedure_completed_id) {
+          ble_data->gatt_procedure_inprogress = true;
+          sc = sl_bt_gatt_set_characteristic_notification(ble_data->connection_handle,
+                                                          ble_data->characteristic_handle,
+                                                          sl_bt_gatt_indication);
+          if(sc != SL_STATUS_OK) {
+              LOG_ERROR("sl_bt_gatt_set_characteristic_notification failed with error code: 0x%x", (unsigned int)sc);
+          }
+          next_state = STATE_SET_NOTIFICATION;
+      }
+      break;
+    case STATE_SET_NOTIFICATION:
+      next_state = STATE_SET_NOTIFICATION;
+      if(SL_BT_MSG_ID(evt->header) == sl_bt_evt_gatt_procedure_completed_id) {
+          next_state = STATE_WAIT;
+      }
+      break;
+    case STATE_WAIT:
+      next_state = STATE_WAIT;
+      if(SL_BT_MSG_ID(evt->header) == sl_bt_evt_connection_closed_id) {
+          next_state = STATE_CLOSE;
+      }
+      break;
+  }
+}
+#endif
