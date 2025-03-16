@@ -12,6 +12,8 @@
 
 #include <stdint.h>
 
+void GPIO_EVEN_IRQHandler(void);
+
 /****************************************************************************
  * @brief   Handles the LETIMER0 interrupt.
  * @param   None

@@ -85,6 +85,20 @@ void schedulerSetI2C0Event(void) {
   CORE_EXIT_CRITICAL(); // exit critical, re-enable interrupts in NVIC
 } // schedulerSetI2C0Event
 
+void schedulerSetEventPB0Pressed(void) {
+  CORE_DECLARE_IRQ_STATE; // set event
+  CORE_ENTER_CRITICAL(); // enter critical, turn off interrupts in NVIC
+  sl_bt_external_signal(evtPB0_pressed);
+  CORE_EXIT_CRITICAL(); // exit critical, re-enable interrupts in NVIC
+} // schedulerSetEventButtonPressed
+
+void schedulerSetEventPB0Released(void) {
+  CORE_DECLARE_IRQ_STATE; // set event
+  CORE_ENTER_CRITICAL(); // enter critical, turn off interrupts in NVIC
+  sl_bt_external_signal(evtPB0_released);
+  CORE_EXIT_CRITICAL(); // exit critical, re-enable interrupts in NVIC
+} // schedulerSetEventButtonReleased
+
 /****************************************************************************
  * @brief   Retrieves the next scheduled event.
  * @param   None

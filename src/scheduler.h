@@ -33,6 +33,10 @@ void schedulerSetEventCOMP1(void);
  ****************************************************************************/
 void schedulerSetI2C0Event(void);
 
+void schedulerSetEventPB0Pressed(void);
+
+void schedulerSetEventPB0Released(void);
+
 /****************************************************************************
  * @brief   Retrieves the next scheduled event.
  * @param   None

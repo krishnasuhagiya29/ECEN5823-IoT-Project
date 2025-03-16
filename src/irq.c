@@ -8,12 +8,33 @@
  ******************************************************************************/
 
 #include "em_letimer.h"
+#include "em_gpio.h"
+
+#include "ble.h"
 #include "irq.h"
 #include "gpio.h"
 #include "scheduler.h"
 #include "timers.h"
 
 uint32_t rollover_count = 0;
+
+void GPIO_EVEN_IRQHandler(void) {
+  int flags;
+  flags = GPIO_IntGetEnabled();
+  GPIO_IntClear(flags);
+
+  ble_data_struct_t* ble_data = get_ble_data_ptr();
+  if(flags & (1 << PB0_pin)){
+      uint32_t value = GPIO_PinInGet(PB0_port, PB0_pin);
+      if(value) {
+          ble_data->PB0_pressed = false;
+          schedulerSetEventPB0Released();
+      } else {
+          ble_data->PB0_pressed = true;
+          schedulerSetEventPB0Pressed();
+      }
+  }
+}
 
 void LETIMER0_IRQHandler(void) {
   int flags;

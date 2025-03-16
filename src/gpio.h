@@ -28,8 +28,8 @@
 #ifndef SRC_GPIO_H_
 #define SRC_GPIO_H_
 
-
-
+#define PB0_port   (gpioPortF)
+#define PB0_pin    (6)
 
 // Function prototypes
 /****************************************************************************

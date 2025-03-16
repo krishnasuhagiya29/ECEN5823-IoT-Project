@@ -72,6 +72,8 @@ typedef enum {
   evtLETIMER0_UF = 1,
   evtLETIMER0_COMP1 = 2,
   evtI2C0_done = 4,
+  evtPB0_pressed = 8,
+  evtPB0_released = 16
 } event_type_t;
 
 /**************************************************************************//**
