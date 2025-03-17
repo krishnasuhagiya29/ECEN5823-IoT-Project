@@ -33,8 +33,18 @@ void schedulerSetEventCOMP1(void);
  ****************************************************************************/
 void schedulerSetI2C0Event(void);
 
+/****************************************************************************
+ * @brief   Sets the event flag for PB0 press.
+ * @param   None
+ * @return  None
+ ****************************************************************************/
 void schedulerSetEventPB0Pressed(void);
 
+/****************************************************************************
+ * @brief   Sets the event flag for PB0 release.
+ * @param   None
+ * @return  None
+ ****************************************************************************/
 void schedulerSetEventPB0Released(void);
 
 /****************************************************************************

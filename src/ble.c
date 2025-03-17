@@ -253,10 +253,22 @@ void handle_ble_event(sl_bt_msg_t *evt) {
       }
       displayPrintf(DISPLAY_ROW_CONNECTION, "Discovering");
 #endif
+      ble_data->connection_open = false;
+      ble_data->indication_in_flight = false;
+      ble_data->ok_to_send_htm_indications = false;
+      ble_data->gatt_procedure_inprogress = false;
+      ble_data->bonded = false;
+      ble_data->PB0_pressed = false;
+      ble_data->ok_to_send_button_indications = false;
+      ble_data->wptr = 0;
+      ble_data->rptr = 0;
       break;
     case sl_bt_evt_connection_opened_id:
       ble_data->connection_open = true;
+      ble_data->ok_to_send_htm_indications = false;
+      ble_data->ok_to_send_button_indications = false;
       ble_data->connection_handle = evt->data.evt_connection_opened.connection;
+
 #if DEVICE_IS_BLE_SERVER
       sc = sl_bt_advertiser_stop(ble_data->advertisingSetHandle);
       if(sc != SL_STATUS_OK) {
@@ -310,6 +322,15 @@ void handle_ble_event(sl_bt_msg_t *evt) {
       displayPrintf(DISPLAY_ROW_TEMPVALUE, "");
       displayPrintf(DISPLAY_ROW_BTADDR2, "");
       break;
+    case sl_bt_evt_connection_parameters_id:
+      // Commented below log out as asked after observing
+      //LOG_INFO("Connection parameters: interval: %d, latency: %d, timeout: %d", (int)(evt->data.evt_connection_parameters.interval * 1.25), evt->data.evt_connection_parameters.latency, evt->data.evt_connection_parameters.timeout * 10 );
+      break;
+    case sl_bt_evt_system_soft_timer_id:
+      // This event indicates that a soft timer has expired.
+      displayUpdate();
+      break;
+#if DEVICE_IS_BLE_SERVER
     case sl_bt_evt_sm_confirm_bonding_id:
       sc = sl_bt_sm_bonding_confirm(ble_data->connection_handle, 1);
       if(sc != SL_STATUS_OK) {
@@ -320,7 +341,6 @@ void handle_ble_event(sl_bt_msg_t *evt) {
       ble_data->passkey = evt->data.evt_sm_confirm_passkey.passkey;
       displayPrintf(DISPLAY_ROW_PASSKEY, "%d", ble_data->passkey);
       displayPrintf(DISPLAY_ROW_ACTION, "Confirm with PB0");
-      displayPrintf(DISPLAY_ROW_9, "");
       break;
     case sl_bt_evt_sm_bonding_failed_id:
       LOG_ERROR("Bonding failed");
@@ -335,34 +355,6 @@ void handle_ble_event(sl_bt_msg_t *evt) {
       displayPrintf(DISPLAY_ROW_PASSKEY, "");
       displayPrintf(DISPLAY_ROW_ACTION, "");
       break;
-    case sl_bt_evt_connection_parameters_id:
-      // Commented below log out as asked after observing
-      //LOG_INFO("Connection parameters: interval: %d, latency: %d, timeout: %d", (int)(evt->data.evt_connection_parameters.interval * 1.25), evt->data.evt_connection_parameters.latency, evt->data.evt_connection_parameters.timeout * 10 );
-      break;
-    case sl_bt_evt_system_external_signal_id:
-      if(evt->data.evt_system_external_signal.extsignals == evtPB0_pressed) {
-          displayPrintf(DISPLAY_ROW_9, "Button Pressed");
-
-          if(!ble_data->bonded) {
-              sc = sl_bt_sm_passkey_confirm(ble_data->connection_handle, 1);
-              if(sc != SL_STATUS_OK) {
-                  LOG_ERROR("sl_bt_sm_passkey_confirm failed with error code: 0x%x", (unsigned int)sc);
-              }
-          } else {
-              ble_send_button_state(1);
-          }
-      } else if (evt->data.evt_system_external_signal.extsignals == evtPB0_released) {
-          displayPrintf(DISPLAY_ROW_9, "Button Released");
-          if(ble_data->bonded) {
-              ble_send_button_state(0);
-          }
-      }
-      break;
-    case sl_bt_evt_system_soft_timer_id:
-      // This event indicates that a soft timer has expired.
-      displayUpdate();
-      break;
-#if DEVICE_IS_BLE_SERVER
     case sl_bt_evt_gatt_server_characteristic_status_id:
       if(evt->data.evt_gatt_server_characteristic_status.characteristic == gattdb_temperature_measurement) {
         if (evt->data.evt_gatt_server_characteristic_status.status_flags == sl_bt_gatt_server_client_config) {
@@ -392,12 +384,13 @@ void handle_ble_event(sl_bt_msg_t *evt) {
             if(evt->data.evt_gatt_server_characteristic_status.client_config_flags == gatt_disable) {
                 ble_data->ok_to_send_button_indications = false;
                 gpioLed1SetOff();
-                displayPrintf(DISPLAY_ROW_TEMPVALUE, "");
+                displayPrintf(DISPLAY_ROW_9, "");
             }
             //check if indication flag is enabled
             if(evt->data.evt_gatt_server_characteristic_status.client_config_flags == gatt_indication) {
                 ble_data->ok_to_send_button_indications = true;
                 gpioLed1SetOn();
+                displayPrintf(DISPLAY_ROW_9, "Button Released");
                 if(!ble_data->indication_in_flight) {
                     indication_para_struct_t* data = read_queue();
                     if(data->charHandle == gattdb_button_state) {
@@ -412,8 +405,28 @@ void handle_ble_event(sl_bt_msg_t *evt) {
           ble_data->indication_in_flight = false;
       }
       break;
+    case sl_bt_evt_system_external_signal_id:
+      if(evt->data.evt_system_external_signal.extsignals == evtPB0_pressed) {
+          displayPrintf(DISPLAY_ROW_9, "Button Pressed");
+
+          if(!ble_data->bonded) {
+              sc = sl_bt_sm_passkey_confirm(ble_data->connection_handle, 1);
+              if(sc != SL_STATUS_OK) {
+                  LOG_ERROR("sl_bt_sm_passkey_confirm failed with error code: 0x%x", (unsigned int)sc);
+              }
+          } else {
+              ble_send_button_state(1);
+          }
+      } else if (evt->data.evt_system_external_signal.extsignals == evtPB0_released) {
+          displayPrintf(DISPLAY_ROW_9, "Button Released");
+          if(ble_data->bonded) {
+              ble_send_button_state(0);
+          }
+      }
+      break;
     case sl_bt_evt_gatt_server_indication_timeout_id:
       ble_data->ok_to_send_htm_indications = false;
+      ble_data->ok_to_send_button_indications = false;
       break;
 #else
     case sl_bt_evt_scanner_legacy_advertisement_report_id:
