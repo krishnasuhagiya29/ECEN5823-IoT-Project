@@ -1,3 +1,12 @@
+/***************************************************************************
+ * @file      ble.c
+ * @brief     The BLE functions definitions.
+ * @author    Krishna Suhagiya, krishna.suhagiya@colorado.edu
+ * @date      02-20-2025
+ * @resources None
+ *
+ ******************************************************************************/
+
 #include "sl_bluetooth.h"
 #include "sl_bt_api.h"
 #include "gatt_db.h"
@@ -217,14 +226,14 @@ void handle_ble_event(sl_bt_msg_t *evt) {
           LOG_ERROR("sl_bt_advertiser_set_timing failed with error code: 0x%x", (unsigned int)sc);
       }
 
-      sc = sl_bt_sm_delete_bondings();
-      if(sc != SL_STATUS_OK) {
-          LOG_ERROR("sl_bt_sm_delete_bondings failed with error code: 0x%x", (unsigned int)sc);
-      }
-
       sc = sl_bt_sm_configure(FLAGS, sl_bt_sm_io_capability_displayyesno);
       if(sc != SL_STATUS_OK) {
           LOG_ERROR("sl_bt_sm_configure failed with error code: 0x%x", (unsigned int)sc);
+      }
+
+      sc = sl_bt_sm_delete_bondings();
+      if(sc != SL_STATUS_OK) {
+          LOG_ERROR("sl_bt_sm_delete_bondings failed with error code: 0x%x", (unsigned int)sc);
       }
 
       sc = sl_bt_legacy_advertiser_generate_data(ble_data->advertisingSetHandle, sl_bt_advertiser_general_discoverable);
@@ -265,8 +274,6 @@ void handle_ble_event(sl_bt_msg_t *evt) {
       break;
     case sl_bt_evt_connection_opened_id:
       ble_data->connection_open = true;
-      ble_data->ok_to_send_htm_indications = false;
-      ble_data->ok_to_send_button_indications = false;
       ble_data->connection_handle = evt->data.evt_connection_opened.connection;
 
 #if DEVICE_IS_BLE_SERVER
@@ -301,6 +308,10 @@ void handle_ble_event(sl_bt_msg_t *evt) {
       displayPrintf(DISPLAY_ROW_TEMPVALUE, "");
       displayPrintf(DISPLAY_ROW_9, "");
 #if DEVICE_IS_BLE_SERVER
+      sc = sl_bt_sm_delete_bondings();
+      if(sc != SL_STATUS_OK) {
+          LOG_ERROR("sl_bt_sm_delete_bondings failed with error code: 0x%x", (unsigned int)sc);
+      }
       sc = sl_bt_legacy_advertiser_generate_data(ble_data->advertisingSetHandle, sl_bt_advertiser_general_discoverable);
       if(sc != SL_STATUS_OK) {
           LOG_ERROR("sl_bt_legacy_advertiser_generate_data failed with error code: 0x%x", (unsigned int)sc);
@@ -368,12 +379,6 @@ void handle_ble_event(sl_bt_msg_t *evt) {
             if(evt->data.evt_gatt_server_characteristic_status.client_config_flags == gatt_indication) {
                 ble_data->ok_to_send_htm_indications = true;
                 gpioLed0SetOn();
-                if(!ble_data->indication_in_flight) {
-                    indication_para_struct_t* data = read_queue();
-                    if(data->charHandle == gattdb_temperature_measurement) {
-                        sc = sl_bt_gatt_server_send_indication(ble_data->connection_handle, gattdb_temperature_measurement, 5, &data->buffer[0]);
-                    }
-                }
             }
         }
       }
@@ -391,18 +396,21 @@ void handle_ble_event(sl_bt_msg_t *evt) {
                 ble_data->ok_to_send_button_indications = true;
                 gpioLed1SetOn();
                 displayPrintf(DISPLAY_ROW_9, "Button Released");
-                if(!ble_data->indication_in_flight) {
-                    indication_para_struct_t* data = read_queue();
-                    if(data->charHandle == gattdb_button_state) {
-                        sc = sl_bt_gatt_server_send_indication(ble_data->connection_handle, gattdb_button_state, 2, &data->buffer[0]);
-                    }
-                }
             }
         }
       }
 
       if (evt->data.evt_gatt_server_characteristic_status.status_flags == sl_bt_gatt_server_confirmation) {
           ble_data->indication_in_flight = false;
+          if(ble_data->ok_to_send_button_indications == true) {
+              indication_para_struct_t* data = read_queue();
+              if(data->charHandle == gattdb_button_state) {
+                  sc = sl_bt_gatt_server_send_indication(ble_data->connection_handle, gattdb_button_state, 2, &data->buffer[0]);
+              }
+              if(data->charHandle == gattdb_temperature_measurement) {
+                  sc = sl_bt_gatt_server_send_indication(ble_data->connection_handle, gattdb_temperature_measurement, 5, &data->buffer[0]);
+              }
+          }
       }
       break;
     case sl_bt_evt_system_external_signal_id:

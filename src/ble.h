@@ -1,3 +1,12 @@
+/***************************************************************************
+ * @file      ble.h
+ * @brief     The BLE functions declarations.
+ * @author    Krishna Suhagiya, krishna.suhagiya@colorado.edu
+ * @date      02-20-2025
+ * @resources None
+ *
+ ***************************************************************************/
+
 #include "stddef.h"
 #include "sl_bgapi.h"
 #include "sl_bt_api.h"
